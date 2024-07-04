@@ -54,7 +54,7 @@ function debounce(fn, ms) {
   };
 }
 
-input.addEventListener("input", debounce(requestRepositories, 400));
+input.addEventListener("input", debounce(requestRepositories, 500));
 
 function closeRepoElement(evt) {
   if (evt.target.closest(".repositories__btn")) {
@@ -64,8 +64,8 @@ function closeRepoElement(evt) {
   }
 }
 
-function createCardRepository() {
-  const { name, language, stargazers_count } = loadedRepositories;
+function createCardRepository(data) {
+  const {name, owner: {login}, stargazers_count} = data;
   repositoriesContainer.insertAdjacentHTML(
     "beforeend",
     `
@@ -73,7 +73,7 @@ function createCardRepository() {
           <div class="repositories__text">
             <span class="repositories__text-element name">${name}</span>
             <span class="repositories__text-element owner"
-              >${language}</span
+              >${login}</span
             >
             <span class="repositories__text-element stars">${stargazers_count}</span>
           </div>
@@ -85,5 +85,13 @@ function createCardRepository() {
 
 
 repositoriesContainer.addEventListener("click", closeRepoElement);
-listRepositories.addEventListener("click", createCardRepository);
-console.log("work");
+listRepositories.addEventListener("click", (evt) => {
+  loadedRepositories.find((item) => {
+    if(item.name === evt.target.textContent) {
+      createCardRepository(item);
+      input.value = '';
+      // clearRepo();
+    }
+    return;
+  })
+});
