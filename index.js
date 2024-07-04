@@ -20,7 +20,6 @@ function clearRepo() {
   listRepositories.innerHTML = "";
 }
 
-
 function requestRepositories(evt) {
   const param = evt.target.value;
   if (param.length !== 0 && evt.data != " ") {
@@ -36,7 +35,7 @@ function requestRepositories(evt) {
         loadedRepositories = data.items;
         data.items.forEach((element) => {
           renderRepoUsers(element.name);
-        })
+        });
       })
       .catch((err) => console.log(err));
   } else {
@@ -65,33 +64,35 @@ function closeRepoElement(evt) {
 }
 
 function createCardRepository(data) {
-  const {name, owner: {login}, stargazers_count} = data;
+  const {
+    name,
+    owner: { login },
+    stargazers_count,
+  } = data;
   repositoriesContainer.insertAdjacentHTML(
     "beforeend",
     `
     <li class="repositories__element">
           <div class="repositories__text">
-            <span class="repositories__text-element name">${name}</span>
+            <span class="repositories__text-element name">Name: ${name}</span>
             <span class="repositories__text-element owner"
-              >${login}</span
+              >Owner: ${login}</span
             >
-            <span class="repositories__text-element stars">${stargazers_count}</span>
+            <span class="repositories__text-element stars">Stars: ${stargazers_count}</span>
           </div>
           <button class="repositories__btn"></button>
         </li>`
   );
 }
 
-
-
 repositoriesContainer.addEventListener("click", closeRepoElement);
 listRepositories.addEventListener("click", (evt) => {
   loadedRepositories.find((item) => {
-    if(item.name === evt.target.textContent) {
+    if (item.name === evt.target.textContent) {
       createCardRepository(item);
-      input.value = '';
-      // clearRepo();
+      input.value = "";
+      clearRepo();
     }
     return;
-  })
+  });
 });
