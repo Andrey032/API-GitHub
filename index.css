@@ -1,5 +1,5 @@
 @font-face {
-  font-family: "Roboto";
+  font-family: "Roboto-Regular";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
@@ -56,6 +56,9 @@ body {
   border: 2px solid #000000;
   font-size: 30px;
   line-height: 35.16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
 }
 
 .list__element:hover {
