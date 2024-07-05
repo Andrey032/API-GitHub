@@ -56,8 +56,6 @@ body {
   border: 2px solid #000000;
   font-size: 30px;
   line-height: 35.16px;
-  overflow: hidden;
-  text-overflow: ellipsis;
   cursor: pointer;
 }
 
@@ -88,9 +86,15 @@ body {
   flex-direction: column;
   justify-content: center;
   margin-left: 16px;
+  max-width: 400px;
+}
+
+.repositories__text-element {
   font-weight: 400;
   font-size: 24px;
   line-height: 28.13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .repositories__btn {
@@ -112,7 +116,7 @@ body {
   right: 0;
   width: 42px;
   height: 4px;
-  background: #FF0000;
+  background: #ff0000;
 }
 
 .repositories__btn::before {

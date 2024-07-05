@@ -8,18 +8,15 @@ function renderRepoUsers(name) {
   if (listRepositories.children.length >= 5) {
     clearRepo();
   }
-  listRepositories.insertAdjacentHTML(
-    "beforeend",
-    `
-      <li class="list__element">${name}</li>
-    `
-  );
+  const tagLi = document.createElement("li");
+  tagLi.classList.add("list__element");
+  tagLi.textContent = name;
+  listRepositories.append(tagLi);
 }
 
 function clearRepo() {
   listRepositories.innerHTML = "";
 }
-
 
 function requestRepositories(evt) {
   const param = evt.target.value;
@@ -36,7 +33,7 @@ function requestRepositories(evt) {
         loadedRepositories = data.items;
         data.items.forEach((element) => {
           renderRepoUsers(element.name);
-        })
+        });
       })
       .catch((err) => console.log(err));
   } else {
@@ -64,26 +61,39 @@ function closeRepoElement(evt) {
   }
 }
 
-function createCardRepository() {
-  const { name, language, stargazers_count } = loadedRepositories;
-  repositoriesContainer.insertAdjacentHTML(
-    "beforeend",
-    `
-    <li class="repositories__element">
-          <div class="repositories__text">
-            <span class="repositories__text-element name">${name}</span>
-            <span class="repositories__text-element owner"
-              >${language}</span
-            >
-            <span class="repositories__text-element stars">${stargazers_count}</span>
-          </div>
-          <button class="repositories__btn"></button>
-        </li>`
-  );
+function createCardRepository(element) {
+  const { name, language, stargazers_count } = element;
+  const liContainer = document.createElement("li");
+  liContainer.classList.add("repositories__element");
+  const div = document.createElement("div");
+  div.classList.add("repositories__text");
+  const spanName = document.createElement("span");
+  spanName.classList.add("repositories__text-element");
+  spanName.textContent = name;
+  div.append(spanName);
+  const spanOwner = document.createElement("span");
+  spanOwner.classList.add("repositories__text-element");
+  spanOwner.textContent = language;
+  div.append(spanOwner);
+  const spanStars = document.createElement("span");
+  spanStars.classList.add("repositories__text-element");
+  spanStars.textContent = stargazers_count;
+  div.append(spanStars);
+  liContainer.append(div);
+  const buttonClose = document.createElement("button");
+  buttonClose.classList.add("repositories__btn");
+  liContainer.append(buttonClose);
+  repositoriesContainer.append(liContainer);
 }
 
-
-
 repositoriesContainer.addEventListener("click", closeRepoElement);
-listRepositories.addEventListener("click", createCardRepository);
-console.log("work");
+listRepositories.addEventListener("click", (evt) => {
+  loadedRepositories.find((item) => {
+    if (item.name === evt.target.textContent) {
+      createCardRepository(item);
+      input.value = "";
+      clearRepo();
+    }
+    return;
+  });
+});
